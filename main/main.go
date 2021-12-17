@@ -340,19 +340,8 @@ func heuristicV2(Vms []vm.Vm, vmgr vm.Manager,  taskManager task.Manager, monito
                     }
                 }
             }
-            if minAbsMNIndex == -1 { // 不存在符合的第一优先级的源物理主机按第二优先级寻找源主机
-                for i := maxParallelMigrationNumPerHost; i < 2 * maxParallelMigrationNumPerHost; i++ {
-                    for j := 0; j < len(hostNames); j++ {
-                        if finished[j] == false && participated[j] <= i { // 参与过迁移的物理主机也可以参与迁出
-                            if int(math.Abs(float64(mn[j]))) < minAbsMN {
-                                minAbsMN, minAbsMNIndex = int(math.Abs(float64(mn[j]))), j
-                            }
-                        }
-                    }
-                }
-                if minAbsMNIndex == -1 {
-                    break // 如果第二优先级的源主机也不存在
-                }
+            if minAbsMNIndex == -1 {
+                break
             }
             for i := 0; i < maxParallelMigrationNumPerHost && indexOfHostOfLeastVM == -1; i++ {
                 for j := 0; j < len(hostNames); j++ {
